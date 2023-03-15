@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const TourSchema = new Schema({
+    MaTour: { type: Schema.ObjectId },
+    TenTour: { type: String, index: true },
+    Gia: { type: Number },
+    HinhAnh: { type: Array },
+    MoTa: { type: Array },
+    SoLuong: { type: Number },
+    DiemDi: { type: String },
+    NgayBD: { type: String },
+    NgayKT: { type: String },
+    MaHDVien: { type: String },
+    DiemDon: { type: String },
+    Sale: { type: Number },
+    LoaiTour: { type: Array },
+    TinhTrang: { type: Boolean, default: false },
+});
+TourSchema.index({ TenTour: 1 });
+const Tour = mongoose.model("Tour", TourSchema);
+module.exports = Tour;
