@@ -17,9 +17,9 @@ const createUser = async (req, res, next) => {
             //         if (last) MaKH = last.MaKH + 1;
             //         else MaKH = 1;
             //     });
-            const salt = await bcrypt.genSalt(10);
+            // const salt = await bcrypt.genSalt(10);
             const data = req.body;
-            const hashPass = await bcrypt.hash(req.body.MatKhau, salt);
+            const hashPass = bcrypt.hashSync(req.body.MatKhau);
             data.MaKH = new mongoose.Types.ObjectId();
             data.MatKhau = hashPass;
             const newUser = await User.create(data);
@@ -47,7 +47,8 @@ const loginUser = async (req, res, next) => {
         const user = await User.findOne({
             Sdt: req.body.Sdt,
         });
-        if (user && bcrypt.compare(req.body.MatKhau, user.MatKhau)) {
+
+        if (user && bcrypt.compareSync(req.body.MatKhau, user.MatKhau)) {
             const token = jwt.sign(
                 { MaKH: user.MaKH, Sdt: user.Sdt },
                 process.env.TOKEN_KEY,
@@ -59,13 +60,14 @@ const loginUser = async (req, res, next) => {
             data.token = token;
             return res
                 .cookie("access_token", token, {
-                    httpOnly: true,
+                    httpOnly: false,
                     // secure: process.env.NODE_ENV === "production",
                 })
                 .status(201)
-                .json(data);
+                .json({ message: "OK", data });
+        } else {
+            return res.status(201).json({ message: "Sai TK hoac MK" });
         }
-        return res.status(400).json({ message: "Sai TK hoac mkl" });
     } catch (err) {
         next(err);
     }
