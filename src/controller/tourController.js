@@ -154,8 +154,8 @@ const updateTour = async (req, res, next) => {
             }
         }
 
-        data.HinhAnh = newArrSlide;
-        data.MoTa = MoTa;
+        if (newArrSlide.length > 0) data.HinhAnh = newArrSlide;
+        if (MoTa.length > 0) data.MoTa = MoTa;
         const result = await Tour.findOneAndUpdate({ MaTour: tourId }, data);
         if (result) {
             return res.status(201).json({ message: "OK", result, data });

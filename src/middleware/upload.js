@@ -23,11 +23,12 @@ const { GridFsStorage } = require("multer-gridfs-storage");
 var storage = multer.diskStorage({
     destination: "uploads",
     filename: function (req, file, cb) {
+        let extArray = file.mimetype.split("/");
+        let mimetype = extArray[extArray.length - 1];
+        req.abc = mimetype;
         cb(
             null,
-            `${Date.now()}_${Math.round(Math.random() * 1e9)}_${
-                file.originalname
-            }`
+            `${Date.now()}_${Math.round(Math.random() * 1e9)}.${mimetype}`
         );
     },
 });
