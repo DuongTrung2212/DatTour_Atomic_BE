@@ -6,7 +6,7 @@ const signUpValidation = function (data) {
         Sdt: Joi.string().min(4).required(),
         MatKhau: Joi.string().min(3).required(),
         Email: Joi.string().email().required(),
-        DiaChi: Joi.string().required(false),
+        // DiaChi: Joi.string().required(false),
     });
     return schema.validate(data);
 };

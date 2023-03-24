@@ -21,8 +21,11 @@ const tourSearch = async (req, res, next) => {
     try {
         const { dataSearch } = req.params;
         const listSearch = await Tour.find({
-            // TenTour: new RegExp(dataSearch, "/\\ufffd/"),
-            $text: { $search: dataSearch },
+            TenTour: {
+                $regex: `${dataSearch}`,
+                $options: "i",
+            },
+            // $text: { $search: dataSearch },
         });
         if (listSearch <= 0) {
             return res.status(201).json({

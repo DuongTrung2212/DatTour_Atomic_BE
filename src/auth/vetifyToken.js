@@ -12,10 +12,14 @@ const verifyToken = (req, res, next) => {
         return res.status(403).send("A token is required for authentication");
     }
     try {
+        const dateNow = new Date();
         const decoded = jwt.verify(token, config.TOKEN_KEY);
         req.dataToken = decoded;
     } catch (err) {
-        return res.status(401).send("Invalid Token");
+        return res
+            .clearCookie("access_token")
+            .status(401)
+            .send("Invalid Token");
     }
     return next();
 };

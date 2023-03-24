@@ -20,8 +20,6 @@ const datTourRoute = require("./src/router/datTourRoute");
 const cors = require("cors");
 
 const verifyToken = require("./src/auth/vetifyToken");
-const Img = require("./src/model/ImgModel");
-const { GridFsStorage } = require("multer-gridfs-storage");
 
 var corsOptions = {
     origin: "http://localhost:3001",
@@ -36,17 +34,6 @@ app.use(express.static("public"));
 // app.set("view engine", "ejs");
 db.connect();
 
-// var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, "uploads");
-//     },
-//     filename: function (req, file, cb) {
-//         const { MaKH } = req.dataToken.MaKH;
-//         cb(null, MaKH + ".png");
-//     },
-// });
-// var upload = multer({ storage: storage });
-
 app.use("/api/user", verifyToken, userRoute);
 app.use("/api/tour", tourRoute);
 app.use("/api/auth", authRoute);
@@ -55,19 +42,6 @@ app.use("/api/img", express.static("uploads"));
 
 app.use("/api/", uploadRoute);
 
-/////////////////////////////
-
-// app.delete("/", (req, res) => {
-//     try {
-//         fs.unlinkSync("uploads/rau1.jpg");
-//         console.log("successfully deleted /tmp/hello");
-//         return res.status(200).send("Successfully! Image has been Deleted");
-//     } catch (err) {
-//         return res.status(400).send(err);
-//     }
-// });
-
-/////////////////////////
 app.get("/", (req, res) => {
     return res.status(200).json({
         message: "ok",
