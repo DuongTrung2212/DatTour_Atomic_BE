@@ -88,7 +88,11 @@ const loginUser = async (req, res, next) => {
                 .status(201)
                 .json({ message: "OK", data });
         } else {
-            return res.status(201).json({ message: "Sai TK hoac MK" });
+            return res
+                .clearCookie("access_token")
+                .clearCookie("isAdmin")
+                .status(201)
+                .json({ message: "Sai TK hoac MK" });
         }
     } catch (err) {
         next(err);
