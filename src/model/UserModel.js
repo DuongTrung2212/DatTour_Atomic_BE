@@ -5,12 +5,12 @@ const UserSchema = new Schema({
     MaKH: {
         type: Schema.ObjectId,
     },
-    Img: { type: String },
+    Img: { type: String, default: "default.png" },
     TenKH: { type: String },
     Sdt: { type: String, required: true },
     MatKhau: { type: String },
     Email: { type: String },
-    DiaChi: { type: String },
+    DiaChi: { type: String, default: "KTX" },
     Level: { type: String, default: 0 },
 });
 // autoIncrement.initialize(mongoose.connection);

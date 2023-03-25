@@ -9,7 +9,7 @@ const DatTourSchema = new Schema(
         NgayDat: { type: Date, default: Date.now().toFixed("'DD-MM-YYYY'") },
         NgayBD: { type: Date },
         NgayKT: { type: Date },
-        TinhTrang: { type: String },
+        TinhTrang: { type: String, default: "GD1" },
         SLNguoi: { type: Number },
     },
     { timestamps: true }

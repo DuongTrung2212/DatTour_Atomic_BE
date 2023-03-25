@@ -30,6 +30,7 @@ const getUser = async (req, res, next) => {
         next(err);
     }
 };
+
 // const createUser = async (req, res, next) => {
 //     try {
 //         const MaKH = "KH" + ((await User.find({})).length + 1);
