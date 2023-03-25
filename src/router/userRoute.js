@@ -21,7 +21,7 @@ router
     .get(UserController.getUser)
     .delete(UserController.deleteUser)
     .patch(upload.single("img"), UserController.updateUser);
-// router.route("/login").post(UserController.loginUser);
+router.route("/:MaKH").get(UserController.getUserById);
 // router.route("/createacc").post(UserController.createAccount);
 // router.route("/account/:accountId").delete(UserController.deleteAccount);
 
