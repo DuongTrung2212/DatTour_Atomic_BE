@@ -50,6 +50,7 @@ const createUser = async (req, res, next) => {
             data.token = token;
 
             return res
+                .cookie("access_token", token, { httpOnly: false })
                 .status(201)
                 .json({ message: "Thanh cong", data, newUser });
         } else {
