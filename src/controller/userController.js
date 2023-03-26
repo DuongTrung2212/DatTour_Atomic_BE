@@ -2,7 +2,7 @@ const { default: mongoose, ObjectId, Mongoose } = require("mongoose");
 const User = require("../model/UserModel");
 const Ve = require("../model/DatTourModel");
 const fs = require("fs");
-
+const bcrypt = require("bcryptjs");
 const Grid = require("gridfs-stream");
 
 // let gfs, gridfsBucket;
@@ -22,6 +22,7 @@ const getUser = async (req, res, next) => {
         const MaKH = req.dataToken.MaKH;
         // return res.status(201).json({ MaKH });M
         const user = await User.findOne({ MaKH: MaKH });
+
         const ve = await Ve.find({ MaKH: MaKH });
         if (user) {
             return res.status(201).json({ user, ve });
@@ -35,11 +36,23 @@ const getUserById = async (req, res, next) => {
         const { MaKH } = req.params;
         // return res.status(201).json({ MaKH });M
         const user = await User.findOne({ MaKH: MaKH });
+
         const ve = await Ve.find({ MaKH: MaKH });
         if (user) {
             return res.status(201).json({ user, ve });
         }
     } catch (err) {
+        next(err);
+    }
+};
+const getAllUser = async (req, res, next) => {
+    try {
+        const userList = await User.find({});
+        if (userList) {
+            return res.status(201).json({ userList });
+        }
+    } catch (err) {
+        return res.status(201).json({ message: "Err" });
         next(err);
     }
 };
@@ -134,5 +147,6 @@ module.exports = {
     // loginUser,
     getUserById,
     deleteUser,
+    getAllUser,
     updateUser,
 };

@@ -22,11 +22,11 @@ const cors = require("cors");
 const verifyToken = require("./src/auth/vetifyToken");
 
 var corsOptions = {
-    origin: "http://localhost:3001",
+    origin: true,
     credentials: true,
 };
-app.use(cookieParser());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
