@@ -30,6 +30,19 @@ const getUser = async (req, res, next) => {
         next(err);
     }
 };
+const getUserById = async (req, res, next) => {
+    try {
+        const { MaKH } = req.params;
+        // return res.status(201).json({ MaKH });M
+        const user = await User.findOne({ MaKH: MaKH });
+        const ve = await Ve.find({ MaKH: MaKH });
+        if (user) {
+            return res.status(201).json({ user, ve });
+        }
+    } catch (err) {
+        next(err);
+    }
+};
 
 // const createUser = async (req, res, next) => {
 //     try {
@@ -119,6 +132,7 @@ module.exports = {
     // createAccount,
     // deleteAccount,
     // loginUser,
+    getUserById,
     deleteUser,
     updateUser,
 };
