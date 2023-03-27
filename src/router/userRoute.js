@@ -22,7 +22,10 @@ router
     .delete(UserController.deleteUser)
     .patch(upload.single("img"), UserController.updateUser);
 router.route("/getAllUser").get(UserController.getAllUser);
-router.route("/:MaKH").get(UserController.getUserById);
+router
+    .route("/:MaKH")
+    .get(UserController.getUserById)
+    .delete(UserController.deleteUserById);
 
 // router.route("/createacc").post(UserController.createAccount);
 // router.route("/account/:accountId").delete(UserController.deleteAccount);

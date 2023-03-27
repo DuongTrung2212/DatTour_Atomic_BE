@@ -101,6 +101,28 @@ const updateUser = async (req, res, next) => {
         next(err);
     }
 };
+const deleteUserById = async (req, res, next) => {
+    try {
+        const { MaKH } = req.params;
+        const isAdmin = req.isAdmin;
+        if (isAdmin) {
+            const ve = await Ve.find({ MaKH: MaKH, TinhTrang: "GD3" });
+            if (ve.length > 0) {
+                return res.status(201).json({
+                    message: "Chưa thể xóa vì user này còn vé đang hoạt động",
+                });
+            }
+            await Ve.findOneAndRemove({ MaKH: MaKH });
+            await User.findOneAndRemove({ MaKH: MaKH });
+            return res.status(201).json({ message: "OK" });
+            // await user.remove();
+            // await ve.remove();
+        }
+        return res.status(201).json({ message: "Làm Admin rồi mới được xóa" });
+    } catch (err) {
+        next(err);
+    }
+};
 const deleteUser = async (req, res, next) => {
     try {
         const MaKH = req.dataToken.MaKH;
@@ -149,4 +171,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     updateUser,
+    deleteUserById,
 };
