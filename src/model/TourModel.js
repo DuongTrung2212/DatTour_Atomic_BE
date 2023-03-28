@@ -14,7 +14,7 @@ const TourSchema = new Schema({
     DiemDon: { type: String },
     Sale: { type: Number },
     LoaiTour: { type: Array },
-    TinhTrang: { type: Boolean, default: false },
+    TinhTrang: { type: Boolean, default: true },
 });
 TourSchema.index({ TenTour: 1 });
 const Tour = mongoose.model("Tour", TourSchema);
