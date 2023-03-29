@@ -5,7 +5,7 @@ const UserSchema = new Schema({
     MaKH: {
         type: Schema.ObjectId,
     },
-    Img: { type: String, default: "default.png" },
+    Img: { type: String,  },
     TenKH: { type: String },
     Sdt: { type: String, required: true },
     MatKhau: { type: String },

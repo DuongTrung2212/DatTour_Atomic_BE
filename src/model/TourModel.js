@@ -10,7 +10,7 @@ const TourSchema = new Schema({
     DiemDi: { type: String },
     NgayBD: { type: String },
     NgayKT: { type: String },
-    MaHDVien: { type: String },
+    MaHDVien: { type: Schema.ObjectId },
     DiemDon: { type: String },
     Sale: { type: Number },
     LoaiTour: { type: Array },

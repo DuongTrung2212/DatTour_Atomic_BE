@@ -3,6 +3,7 @@ const Tour = require("../model/TourModel");
 const Ve = require("../model/DatTourModel");
 const fs = require("fs");
 const DatTour = require("../model/DatTourModel");
+const NhanVien = require("../model/NhanVienModel");
 const getAllTour = async (req, res, next) => {
     try {
         const listTour = await Tour.find({});
@@ -17,6 +18,7 @@ const getAllTour = async (req, res, next) => {
         next(err);
     }
 };
+
 const tourSearch = async (req, res, next) => {
     try {
         const { dataSearch } = req.params;
@@ -69,8 +71,9 @@ const getTour = async (req, res, next) => {
     try {
         const { tourId } = req.params;
         const tour = await Tour.findOne({ MaTour: tourId });
+        const HDVien = await NhanVien.findOne({ MaHDVien: tour.MaHDVien });
         if (tour) {
-            return res.status(201).json({ tour });
+            return res.status(201).json({ tour, HDVien });
         }
         return res.status(201).json({ message: "ko tim thay" });
     } catch (err) {
@@ -116,6 +119,7 @@ const updateTour = async (req, res, next) => {
     try {
         const { tourId } = req.params;
         const data = req.body;
+        // return res.status(201).json({ data });
         const dataTitleMoTa = req.body.titleMoTa;
         const dataConTentMoTa = req.body.contentMoTa;
 
@@ -128,10 +132,12 @@ const updateTour = async (req, res, next) => {
         var oldArrSlide = tour.HinhAnh;
         var oldArrMoTa = tour.MoTa;
 
-        arrayImg.forEach((item) => {
-            if (item.fieldname == "imgMoTa") newArrMoTa.push(item.filename);
-            else newArrSlide.push(item.filename);
-        });
+        if (arrayImg) {
+            arrayImg.forEach((item) => {
+                if (item.fieldname == "imgMoTa") newArrMoTa.push(item.filename);
+                else newArrSlide.push(item.filename);
+            });
+        }
 
         if (newArrSlide.length > 0) {
             oldArrSlide.forEach((nameImg) => {
@@ -163,7 +169,7 @@ const updateTour = async (req, res, next) => {
         if (result) {
             return res.status(201).json({ message: "OK", result, data });
         }
-        return res.status(201).json({ message: "Loi" });
+        return res.status(401).json({ message: "Loi" });
     } catch (err) {
         next(err);
     }

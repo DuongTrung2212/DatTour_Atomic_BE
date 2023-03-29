@@ -16,6 +16,7 @@ const tourRoute = require("./src/router/tourRoute");
 const authRoute = require("./src/router/authRoute");
 const uploadRoute = require("./src/router/upload");
 const datTourRoute = require("./src/router/datTourRoute");
+const nhanVienRoute = require("./src/router/nhanVienRoute");
 
 const cors = require("cors");
 
@@ -37,6 +38,7 @@ db.connect();
 app.use("/api/user", verifyToken, userRoute);
 app.use("/api/tour", tourRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/nhanVien", nhanVienRoute);
 app.use("/api/datTour", verifyToken, datTourRoute);
 app.use("/api/img", express.static("uploads"));
 

@@ -17,6 +17,20 @@ const Grid = require("gridfs-stream");
 //     console.log("GFS ok");
 // });
 /////////////////////////////////////////////////////////////
+const checkPass = async (req, res, next) => {
+    try {
+        const MaKH = req.dataToken.MaKH;
+        const user = await User.findOne({ MaKH: MaKH });
+        // return res.status(201).json({ user: req.body.MatKhau });
+        if (user && bcrypt.compareSync(req.body.MatKhau, user.MatKhau)) {
+            return res.status(201).json({ message: "OK" });
+        } else {
+            return res.status(201).json({ message: "Err" });
+        }
+    } catch (err) {
+        next(err);
+    }
+};
 const getUser = async (req, res, next) => {
     try {
         const MaKH = req.dataToken.MaKH;
@@ -172,4 +186,5 @@ module.exports = {
     getAllUser,
     updateUser,
     deleteUserById,
+    checkPass,
 };

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const NhanVien = require("../model/NhanVienModel");
 const Tour = require("../model/TourModel");
 
@@ -8,15 +9,24 @@ const getAllNhanVien = async (req, res, next) => {
     }
     return res.status(201).json({ message: "Ko cos du lieu" });
 };
+const createNhanVien = async (req, res, next) => {
+    const data = req.body;
+    data.MaHDVien = new mongoose.Types.ObjectId();
+    const listNhanVien = await NhanVien.create(data);
+    if (listNhanVien.length > 0) {
+        return res.status(201).json({ listNhanVien });
+    }
+    return res.status(201).json({ message: "Ko cos du lieu" });
+};
 
 const getNhanVien = async (req, res, next) => {
-    const idNhanVien = req.params;
+    const { idNhanVien } = req.params;
     const nhanVien = await NhanVien.find({ MaHDVien: idNhanVien });
     if (nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
     return res.status(201).json({ nhanVien });
 };
 const updateNhanVien = async (req, res, next) => {
-    const idNhanVien = req.params;
+    const { idNhanVien } = req.params;
     const data = req.body;
     const nhanVien = await NhanVien.findOneAndUpdate(
         { MaHDVien: idNhanVien },
@@ -26,7 +36,7 @@ const updateNhanVien = async (req, res, next) => {
     return res.status(201).json({ nhanVien });
 };
 const deleteNhanVien = async (req, res, next) => {
-    const idNhanVien = req.params;
+    const { idNhanVien } = req.params;
     const listTour = await Tour.find({ MaHDVien: idNhanVien });
     if (listTour.length)
         return res
@@ -41,4 +51,5 @@ module.exports = {
     getNhanVien,
     deleteNhanVien,
     updateNhanVien,
+    createNhanVien,
 };
