@@ -21,7 +21,7 @@ router
     .get(UserController.getUser)
 
     .delete(UserController.deleteUser)
-    .patch(upload.single("img"), UserController.updateUser);
+    .patch(upload.single("Img"), UserController.updateUser);
 router.route("/getAllUser").get(UserController.getAllUser);
 router.route("/verify").post(UserController.checkPass);
 router

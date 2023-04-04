@@ -96,11 +96,14 @@ const updateUser = async (req, res, next) => {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
         // await gfs.files.deleteOne({ filename: user.Img });
+
         try {
-            fs.unlinkSync(`${process.env.FOLDER_IMG}/${user.Img}`);
+            if (user.Img != "default.png") {
+                fs.unlinkSync(`${process.env.FOLDER_IMG}/${user.Img}`);
+            }
         } catch (error) {}
 
-        const updateData = req.body;
+        var updateData = req.body;
         const img = req.file.filename;
         updateData.Img = img;
         const result = await User.findOneAndUpdate({ MaKH: MaKH }, updateData);
