@@ -19,11 +19,11 @@ const upload = require("../middleware/upload");
 router
     .route("/")
     .get(UserController.getUser)
-
     .delete(UserController.deleteUser)
     .patch(upload.single("Img"), UserController.updateUser);
 router.route("/getAllUser").get(UserController.getAllUser);
 router.route("/verify").post(UserController.checkPass);
+router.route("/changePass").patch(UserController.changePassUser);
 router
     .route("/:MaKH")
     .get(UserController.getUserById)

@@ -25,7 +25,7 @@ const checkPass = async (req, res, next) => {
         if (user && bcrypt.compareSync(req.body.MatKhau, user.MatKhau)) {
             return res.status(201).json({ message: "OK" });
         } else {
-            return res.status(201).json({ message: "Err" });
+            return res.status(201).json({ message: "Sai mật khẩu" });
         }
     } catch (err) {
         next(err);
@@ -96,22 +96,27 @@ const updateUser = async (req, res, next) => {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
         // await gfs.files.deleteOne({ filename: user.Img });
-
-        try {
-            if (user.Img != "default.png") {
-                fs.unlinkSync(`${process.env.FOLDER_IMG}/${user.Img}`);
-            }
-        } catch (error) {}
-
         var updateData = req.body;
-        const img = req.file.filename;
-        updateData.Img = img;
+        var imgLink;
+        if (req.file) {
+            var img = req.file.filename;
+            try {
+                if (user.Img != "default.png") {
+                    fs.unlinkSync(`${process.env.FOLDER_IMG}/${user.Img}`);
+                }
+            } catch (error) {}
+            updateData.Img = img;
+            imgLink = process.env.ORIGIN_URL + "img/" + req.file.filename;
+        } else {
+            imgLink = process.env.ORIGIN_URL + "img/" + user.Img;
+        }
+
         const result = await User.findOneAndUpdate({ MaKH: MaKH }, updateData);
         if (result)
             return res.status(201).json({
                 message: "OK",
                 result,
-                imgLink: process.env.ORIGIN_URL + "img/" + req.file.filename,
+                imgLink: imgLink,
             });
         return res.status(301).json({ message: "Loi updateUser" });
     } catch (err) {
@@ -155,6 +160,21 @@ const deleteUser = async (req, res, next) => {
         next(err);
     }
 };
+const changePassUser = async (req, res, next) => {
+    try {
+        const MaKH = req.dataToken.MaKH;
+        const user = await User.findOne({ MaKH: MaKH });
+        if (user) {
+            const newPass = bcrypt.hashSync(req.body.MatKhau);
+            await user.updateOne({ MatKhau: newPass });
+            await user.save();
+            return res.status(201).json({ message: "OK" });
+        }
+        return res.status(201).json({ message: "Lỗi" });
+    } catch (err) {
+        next(err);
+    }
+};
 
 // const createAccount = async (req, res, next) => {
 //     try {
@@ -180,10 +200,7 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
     getUser,
-    // createUser,
-    // createAccount,
-    // deleteAccount,
-    // loginUser,
+    changePassUser,
     getUserById,
     deleteUser,
     getAllUser,

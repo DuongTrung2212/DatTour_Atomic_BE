@@ -179,9 +179,9 @@ const deleteTour = async (req, res, next) => {
         const { tourId } = req.params;
         const datTour = await DatTour.find({
             MaTour: tourId,
-            TinhTrang: "Chờ duyệt" || "Đã duyệt" || "Đang tiến hành",
+            TinhTrang: "CD" || "DD",
         });
-        if (datTour) {
+        if (datTour.length > 0) {
             return res
                 .status(201)
                 .json({ message: "Đơn đặt tour vẫn chưa hoàn thành hết" });

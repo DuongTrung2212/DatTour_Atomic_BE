@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const DatTourSchema = new Schema(
     {
-        MaVe: { type: Schema.ObjectId, index: true },
+        MaVe: { type: Schema.ObjectId },
         MaTour: { type: Schema.ObjectId },
         MaKH: { type: Schema.ObjectId },
         MaNV: { type: Schema.ObjectId },

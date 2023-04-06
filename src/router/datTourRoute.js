@@ -7,5 +7,6 @@ router
     .get(datTourController.getAllTicket)
     .post(datTourController.newTicket);
 router.route("/filter/:filter").get(datTourController.getUserTicket);
+router.route("/:MaVe").delete(datTourController.deleteTicketByUser);
 
 module.exports = router;
