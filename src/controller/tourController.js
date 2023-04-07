@@ -9,6 +9,7 @@ const getAllTour = async (req, res, next) => {
         const listTour = await Tour.find({});
         if (listTour <= 0) {
             return res.status(201).json({
+                listTour: {},
                 message: "ko co du lieu",
             });
         }
