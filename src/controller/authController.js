@@ -52,7 +52,7 @@ const createUser = async (req, res, next) => {
             return res
                 .cookie("access_token", token, { httpOnly: false })
                 .status(201)
-                .json({ message: "Thanh cong", data, newUser });
+                .json({ message: "OK", data, newUser });
         } else {
             return res.status(201).json({ message: "Sdt da ton tai" });
         }
@@ -105,7 +105,7 @@ const logOutUser = async (req, res, next) => {
             .clearCookie("access_token")
             .clearCookie("isAdmin")
             .status(200)
-            .json({ message: "Successfully logged out" })
+            .json({ message: "OK" })
             .end();
     } catch (err) {
         next(err);

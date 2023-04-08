@@ -34,7 +34,7 @@ const tourSearch = async (req, res, next) => {
                 message: "ko co du lieu",
             });
         }
-        return res.status(201).json({ listSearch });
+        return res.status(201).json({ message: "OK", listSearch });
     } catch (err) {
         next(err);
     }
@@ -47,7 +47,7 @@ const getOpenTour = async (req, res, next) => {
                 message: "ko co du lieu",
             });
         }
-        return res.status(201).json({ listTour });
+        return res.status(201).json({ message: "OK", listTour });
     } catch (err) {
         next(err);
     }
@@ -62,7 +62,9 @@ const getCategoryTour = async (req, res, next) => {
                 message: "ko co du lieu",
             });
         }
-        return res.status(201).json({ tourTN, tourTQ, tourBien });
+        return res
+            .status(201)
+            .json({ message: "OK", tourTN, tourTQ, tourBien });
     } catch (err) {
         next(err);
     }
@@ -73,7 +75,7 @@ const getTour = async (req, res, next) => {
         const tour = await Tour.findOne({ MaTour: tourId });
         const HDVien = await NhanVien.findOne({ MaHDVien: tour.MaHDVien });
         if (tour) {
-            return res.status(201).json({ tour, HDVien });
+            return res.status(201).json({ message: "OK", tour, HDVien });
         }
         return res.status(201).json({ message: "ko tim thay" });
     } catch (err) {
@@ -108,7 +110,9 @@ const newTour = async (req, res, next) => {
         tour.MoTa = MoTa;
         const newTour = await Tour.create(tour);
         if (newTour) {
-            return res.status(201).json({ newTour, listLinkImg });
+            return res
+                .status(201)
+                .json({ message: "OK", newTour, listLinkImg });
         }
         return res.status(201).json({ message: "Loi" });
     } catch (err) {

@@ -39,7 +39,7 @@ const getUser = async (req, res, next) => {
 
         const ve = await Ve.find({ MaKH: MaKH });
         if (user) {
-            return res.status(201).json({ user, ve });
+            return res.status(201).json({ message: "OK", user, ve });
         }
     } catch (err) {
         next(err);
@@ -53,7 +53,7 @@ const getUserById = async (req, res, next) => {
 
         const ve = await Ve.find({ MaKH: MaKH });
         if (user) {
-            return res.status(201).json({ user, ve });
+            return res.status(201).json({ message: "OK", user, ve });
         }
     } catch (err) {
         next(err);
@@ -63,7 +63,7 @@ const getAllUser = async (req, res, next) => {
     try {
         const userList = await User.find({});
         if (userList) {
-            return res.status(201).json({ userList });
+            return res.status(201).json({ message: "OK", userList });
         }
     } catch (err) {
         return res.status(201).json({ message: "Err" });
@@ -155,7 +155,7 @@ const deleteUser = async (req, res, next) => {
         return res
             .clearCookie("access_token")
             .status(201)
-            .json({ message: "Thanh cong" });
+            .json({ message: "OK" });
     } catch (err) {
         next(err);
     }

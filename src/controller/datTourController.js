@@ -22,7 +22,7 @@ const getUserTicket = async (req, res, next) => {
             tour,
         });
     }
-    if (listTicket) return res.status(201).json({ data });
+    if (listTicket) return res.status(201).json({ message: "OK", data });
     return res.status(201).json({ message: "Ko co du lieu" });
 };
 const newTicket = async (req, res, next) => {

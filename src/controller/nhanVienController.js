@@ -5,7 +5,7 @@ const Tour = require("../model/TourModel");
 const getAllNhanVien = async (req, res, next) => {
     const listNhanVien = await NhanVien.find({});
     if (listNhanVien.length > 0) {
-        return res.status(201).json({ listNhanVien });
+        return res.status(201).json({ message: "OK", listNhanVien });
     }
     return res.status(201).json({ message: "Ko cos du lieu" });
 };
@@ -14,7 +14,7 @@ const createNhanVien = async (req, res, next) => {
     data.MaHDVien = new mongoose.Types.ObjectId();
     const listNhanVien = await NhanVien.create(data);
     if (listNhanVien.length > 0) {
-        return res.status(201).json({ listNhanVien });
+        return res.status(201).json({ message: "OK", listNhanVien });
     }
     return res.status(201).json({ message: "Ko cos du lieu" });
 };
@@ -22,8 +22,8 @@ const createNhanVien = async (req, res, next) => {
 const getNhanVien = async (req, res, next) => {
     const { idNhanVien } = req.params;
     const nhanVien = await NhanVien.find({ MaHDVien: idNhanVien });
-    if (nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
-    return res.status(201).json({ nhanVien });
+    if (!nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
+    return res.status(201).json({ message: "OK", nhanVien });
 };
 const updateNhanVien = async (req, res, next) => {
     const { idNhanVien } = req.params;
@@ -32,8 +32,8 @@ const updateNhanVien = async (req, res, next) => {
         { MaHDVien: idNhanVien },
         data
     );
-    if (nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
-    return res.status(201).json({ nhanVien });
+    if (!nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
+    return res.status(201).json({ message: "OK", nhanVien });
 };
 const deleteNhanVien = async (req, res, next) => {
     const { idNhanVien } = req.params;
@@ -43,7 +43,7 @@ const deleteNhanVien = async (req, res, next) => {
             .status(201)
             .json({ message: "Đang có nhân viên nhận Tour!" });
     const nhanVien = await NhanVien.findOneAndDelete({ MaHDVien: idNhanVien });
-    if (nhanVien) return res.status(201).json({ message: "Đã xóa nhân viên" });
+    if (nhanVien) return res.status(201).json({ message: "OK" });
 };
 
 module.exports = {
