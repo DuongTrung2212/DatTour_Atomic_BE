@@ -13,7 +13,7 @@ const createNhanVien = async (req, res, next) => {
     const data = req.body;
     data.MaHDVien = new mongoose.Types.ObjectId();
     const listNhanVien = await NhanVien.create(data);
-    if (listNhanVien.length > 0) {
+    if (listNhanVien) {
         return res.status(201).json({ message: "OK", listNhanVien });
     }
     return res.status(201).json({ message: "Ko cos du lieu" });
