@@ -8,6 +8,7 @@ router
 router
     .route("/:idNhanVien")
     .get(NhanVienController.getNhanVien)
-    .post(NhanVienController.updateNhanVien);
+    .post(NhanVienController.updateNhanVien)
+    .delete(NhanVienController.deleteNhanVien);
 
 module.exports = router;

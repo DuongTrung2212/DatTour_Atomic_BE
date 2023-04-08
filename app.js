@@ -38,7 +38,7 @@ db.connect();
 app.use("/api/user", verifyToken, userRoute);
 app.use("/api/tour", tourRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/nhanVien", nhanVienRoute);
+app.use("/api/nhanVien", verifyToken, nhanVienRoute);
 app.use("/api/datTour", verifyToken, datTourRoute);
 app.use("/api/img", express.static("uploads"));
 
