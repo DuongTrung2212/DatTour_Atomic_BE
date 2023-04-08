@@ -6,7 +6,7 @@ const NhanVienSchema = new Schema({
     GioiTinh: { type: String },
     SdtNV: { type: String },
     Email: { type: String },
-    NgayLV: { type: Date, default: new Date().toLocaleDateString() },
+    NgayLV: { type: String, default: new Date().toLocaleDateString() },
 });
 const NhanVien = mongoose.model("NhanVien", NhanVienSchema);
 module.exports = NhanVien;
