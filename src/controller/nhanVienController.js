@@ -14,6 +14,29 @@ const getAllNhanVien = async (req, res, next) => {
     }
     return res.status(201).json({ message: "Ko có dữ liệu" });
 };
+const getAllNhanVienFreeTime = async (req, res, next) => {
+    try {
+        const isAdmin = req.isAdmin;
+        if (!isAdmin)
+            return res
+                .status(401)
+                .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
+        const listNhanVien = await NhanVien.find({});
+        listNhanVien.forEach(async (nhanVien, index) => {
+            const check = await Tour.findOne({
+                MaHDVien: nhanVien.MaHDVien,
+                TinhTrang: true,
+            });
+            if (check) listNhanVien[index].remove();
+        });
+        if (listNhanVien.length > 0) {
+            return res.status(201).json({ message: "OK", listNhanVien });
+        }
+        return res.status(201).json({ message: "Ko có dữ liệu" });
+    } catch (err) {
+        next(err);
+    }
+};
 const createNhanVien = async (req, res, next) => {
     const isAdmin = req.isAdmin;
     if (!isAdmin)
@@ -77,6 +100,7 @@ const deleteNhanVien = async (req, res, next) => {
 };
 
 module.exports = {
+    getAllNhanVienFreeTime,
     getAllNhanVien,
     getNhanVien,
     deleteNhanVien,

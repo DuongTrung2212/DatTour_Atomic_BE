@@ -183,7 +183,9 @@ const deleteTour = async (req, res, next) => {
         const { tourId } = req.params;
         const datTour = await DatTour.find({
             MaTour: tourId,
-            TinhTrang: "CD" || "DD",
+            TinhTrang: {
+                $in: ["DD", "CD"],
+            },
         });
         if (datTour.length > 0) {
             return res

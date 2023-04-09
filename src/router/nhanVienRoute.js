@@ -5,6 +5,8 @@ router
     .route("/")
     .get(NhanVienController.getAllNhanVien)
     .post(NhanVienController.createNhanVien);
+router.route("/freetime").get(NhanVienController.getAllNhanVienFreeTime);
+
 router
     .route("/:idNhanVien")
     .get(NhanVienController.getNhanVien)

@@ -5,7 +5,7 @@ const DatTourSchema = new Schema(
         MaVe: { type: Schema.ObjectId },
         MaTour: { type: Schema.ObjectId },
         MaKH: { type: Schema.ObjectId },
-        MaNV: { type: Schema.ObjectId },
+        MaHDVien: { type: Schema.ObjectId },
         NgayDat: { type: String, default: new Date().toLocaleDateString() },
         NgayBD: { type: String },
         NgayKT: { type: String },
