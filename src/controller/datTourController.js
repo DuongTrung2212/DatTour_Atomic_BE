@@ -3,9 +3,26 @@ const DatTour = require("../model/DatTourModel");
 const Tour = require("../model/TourModel");
 
 const getAllTicket = async (req, res, next) => {
-    const listTicket = await DatTour.find({});
-    if (listTicket) return res.status(201).json({ listTicket });
-    return res.status(201).json({ message: "Ko co du lieu" });
+    try {
+        const listTour = await Tour.find({});
+        let data = [];
+        for (let index = 0; index < listTour.length; index++) {
+            const listTicket = await DatTour.find({
+                MaTour: listTour[index].MaTour,
+            });
+
+            if (listTicket.length > 0) {
+                data.push({ tour: listTour[index], listTicket });
+            }
+        }
+
+        if (data.length > 0) {
+            return res.status(201).json({ message: "OK", data });
+        }
+        return res.status(201).json({ message: "Ko co du lieu" });
+    } catch (err) {
+        next(err);
+    }
 };
 const getUserTicket = async (req, res, next) => {
     const MaKH = req.dataToken.MaKH;
