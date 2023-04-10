@@ -44,6 +44,10 @@ const createNhanVien = async (req, res, next) => {
         return res
             .status(401)
             .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
+
+    const check = await NhanVien.find({ SdtNV: req.body.SdtNV });
+    if (check)
+        return res.status(201).json({ message: "Số điện thoại đã tồn tại" });
     const data = req.body;
     data.MaHDVien = new mongoose.Types.ObjectId();
     const nhanVien = await NhanVien.create(data);

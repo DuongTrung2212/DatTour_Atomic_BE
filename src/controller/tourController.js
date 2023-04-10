@@ -193,12 +193,16 @@ const deleteTour = async (req, res, next) => {
 
         // await Ve.findOneAndDelete({ MaTour: tourId });
         const tour = await Tour.findOne({ MaTour: tourId });
-        tour.HinhAnh.forEach((item) => {
-            fs.unlinkSync(`${process.env.FOLDER_IMG}/${item}`);
-        });
-        tour.MoTa.forEach((item) => {
-            fs.unlinkSync(`${process.env.FOLDER_IMG}/${item.Img}`);
-        });
+        try {
+            tour.HinhAnh.forEach((item) => {
+                fs.unlinkSync(`${process.env.FOLDER_IMG}/${item}`);
+            });
+            tour.MoTa.forEach((item) => {
+                fs.unlinkSync(`${process.env.FOLDER_IMG}/${item.img}`);
+            });
+        } catch (err) {}
+        tour.remove();
+
         return res.status(201).json({ message: "OK", tour });
     } catch (err) {
         next(err);
