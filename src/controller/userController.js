@@ -71,26 +71,6 @@ const getAllUser = async (req, res, next) => {
     }
 };
 
-// const createUser = async (req, res, next) => {
-//     try {
-//         const MaKH = "KH" + ((await User.find({})).length + 1);
-//         const check = await Account.find({ SdtKH: req.SdtKH });
-//         if (!check) {
-//             const data = req.body;
-//             data.MaKH = MaKH;
-//             data.MaTK = MaTK;
-//             const newUser = await User.create(data);
-//             const newAccount = await Account.create(data);
-//             return res
-//                 .status(201)
-//                 .json({ message: "Thanh cong", newUser, newAccount });
-//         } else {
-//             return res.status(201).json({ message: "Sdt da ton tai" });
-//         }
-//     } catch (err) {
-//         next(err);
-//     }
-// };
 const updateUser = async (req, res, next) => {
     try {
         const MaKH = req.dataToken.MaKH;
@@ -176,15 +156,6 @@ const changePassUser = async (req, res, next) => {
     }
 };
 
-// const createAccount = async (req, res, next) => {
-//     try {
-//         const newAccount = await new Account(req.body);
-//         await newAccount.save();
-//         return res.status(201).json({ message: "Thanh cong", newAccount });
-//     } catch (err) {
-//         next(err);
-//     }
-// };
 // const deleteAccount = async (req, res, next) => {
 //     try {
 //         const { accountId } = req.params;

@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const DatTour = require("../model/DatTourModel");
 const Tour = require("../model/TourModel");
+const User = require("../model/UserModel");
 
 const getAllTicket = async (req, res, next) => {
     try {
@@ -12,7 +13,14 @@ const getAllTicket = async (req, res, next) => {
             });
 
             if (listTicket.length > 0) {
-                data.push({ tour: listTour[index], listTicket });
+                const ticketAndUser = [];
+                for (let index = 0; index < listTicket.length; index++) {
+                    const user = await User.findOne({
+                        MaKH: listTicket[index].MaKH,
+                    });
+                    ticketAndUser.push({ ticket: listTicket[index], user });
+                }
+                data.push({ tour: listTour[index], listTicket: ticketAndUser });
             }
         }
 
@@ -42,6 +50,16 @@ const getUserTicket = async (req, res, next) => {
     if (listTicket) return res.status(201).json({ message: "OK", data });
     return res.status(201).json({ message: "Ko co du lieu" });
 };
+const updateTicket = async (req, res, next) => {
+    try {
+        const { MaVe } = req.params;
+        const ticket = await DatTour.findOneAndUpdate({ MaVe: MaVe }, req.body);
+        if (ticket) return res.status(201).json({ message: "OK", ticket });
+        return res.status(401).json({ message: "Ko co du lieu" });
+    } catch (err) {
+        next(err);
+    }
+};
 const newTicket = async (req, res, next) => {
     // return res.status(201).json({ message:  });
     const MaKH = req.dataToken.MaKH;
@@ -70,9 +88,9 @@ const newTicket = async (req, res, next) => {
     return res.status(201).json({ message: "Loi dat tour" });
 };
 const deleteTicketByUser = async (req, res, next) => {
-    const MaKH = req.dataToken.MaKH;
+    // const MaKH = req.dataToken.MaKH;
     const { MaVe } = req.params;
-    const ticket = await DatTour.findOne({ MaKH: MaKH, MaVe: MaVe });
+    const ticket = await DatTour.findOne({ MaVe: MaVe });
     if (ticket) {
         if (ticket.TinhTrang == "CD") {
             const tour = await Tour.findOne({ MaTour: ticket.MaTour });
@@ -86,10 +104,33 @@ const deleteTicketByUser = async (req, res, next) => {
     }
     return res.status(201).json({ message: "Không có dữ liệu" });
 };
+const deleteTicketByAdmin = async (req, res, next) => {
+    try {
+        const { MaVe } = req.params;
+        const ticket = await DatTour.findOne({ MaVe: MaVe });
+        if (ticket) {
+            const tour = await Tour.findOne({ MaTour: ticket.MaTour });
+            await tour.updateOne({ SoLuong: tour.SoLuong + ticket.SLNguoi });
+            await tour.save();
+            await ticket.remove();
+            return res.status(201).json({ message: "OK" });
+        }
+        return res.status(201).json({ message: "Không có dữ liệu" });
+    } catch (err) {
+        next(err);
+    }
+};
 // const updateTicket = async (req, res, next) => {
 //     const data = req.body;
 //     data.MaVe = new mongoose.Types.ObjectId();
 //     const newTicket = await DatTour.create(data);
 //     if (newTicket) return res.status(201).json({ message: "OK", data });
 // };
-module.exports = { getAllTicket, getUserTicket, newTicket, deleteTicketByUser };
+module.exports = {
+    getAllTicket,
+    updateTicket,
+    getUserTicket,
+    newTicket,
+    deleteTicketByUser,
+    deleteTicketByAdmin,
+};
