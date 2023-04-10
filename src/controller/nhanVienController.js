@@ -22,6 +22,7 @@ const getAllNhanVienFreeTime = async (req, res, next) => {
                 .status(401)
                 .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
         const listNhanVien = await NhanVien.find({});
+
         listNhanVien.forEach(async (nhanVien, index) => {
             const check = await Tour.findOne({
                 MaHDVien: nhanVien.MaHDVien,

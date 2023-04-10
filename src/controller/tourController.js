@@ -123,12 +123,10 @@ const updateTour = async (req, res, next) => {
     try {
         const { tourId } = req.params;
         const data = req.body;
-        // return res.status(201).json({ data });
         const dataTitleMoTa = req.body.titleMoTa;
         const dataConTentMoTa = req.body.contentMoTa;
 
         var arrayImg = req.files;
-        // return res.status(201).json({ arrayImg });
         var newArrSlide = [];
         var newArrMoTa = [];
         var MoTa = [];
@@ -192,8 +190,15 @@ const deleteTour = async (req, res, next) => {
                 .status(201)
                 .json({ message: "Đơn đặt tour vẫn chưa hoàn thành hết" });
         }
+
         // await Ve.findOneAndDelete({ MaTour: tourId });
-        const tour = await Tour.findOneAndDelete({ MaTour: tourId });
+        const tour = await Tour.findOne({ MaTour: tourId });
+        tour.HinhAnh.forEach((item) => {
+            fs.unlinkSync(`${process.env.FOLDER_IMG}/${item}`);
+        });
+        tour.MoTa.forEach((item) => {
+            fs.unlinkSync(`${process.env.FOLDER_IMG}/${item.Img}`);
+        });
         return res.status(201).json({ message: "OK", tour });
     } catch (err) {
         next(err);
