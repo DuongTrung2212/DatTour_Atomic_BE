@@ -98,7 +98,7 @@ const newTour = async (req, res, next) => {
             else newArrSlide.push(item.filename);
             listLinkImg.push(`${process.env.ORIGIN_URL}img/${item.filename}`);
         });
-        for (const i in newArrMoTa) {
+        for (var i in newArrMoTa) {
             MoTa.push({
                 title: dataTitleMoTa[i],
                 img: newArrMoTa[i],
@@ -112,7 +112,7 @@ const newTour = async (req, res, next) => {
         if (newTour) {
             return res
                 .status(201)
-                .json({ message: "OK", newTour, listLinkImg });
+                .json({ message: "OK", newTour, listLinkImg, tour });
         }
         return res.status(201).json({ message: "Loi" });
     } catch (err) {
@@ -190,8 +190,6 @@ const deleteTour = async (req, res, next) => {
                 .status(201)
                 .json({ message: "Đơn đặt tour vẫn chưa hoàn thành hết" });
         }
-
-        // await Ve.findOneAndDelete({ MaTour: tourId });
         const tour = await Tour.findOne({ MaTour: tourId });
         try {
             tour.HinhAnh.forEach((item) => {

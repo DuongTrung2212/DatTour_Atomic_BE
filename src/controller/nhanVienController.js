@@ -22,16 +22,18 @@ const getAllNhanVienFreeTime = async (req, res, next) => {
                 .status(401)
                 .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
         const listNhanVien = await NhanVien.find({});
-
-        listNhanVien.forEach(async (nhanVien, index) => {
+        var response = [];
+        for (let index = 0; index < listNhanVien.length; index++) {
             const check = await Tour.findOne({
-                MaHDVien: nhanVien.MaHDVien,
+                MaHDVien: listNhanVien[index].MaHDVien,
                 TinhTrang: true,
             });
-            if (check) listNhanVien[index].remove();
-        });
-        if (listNhanVien.length > 0) {
-            return res.status(201).json({ message: "OK", listNhanVien });
+            if (!check) response.push(listNhanVien[index]);
+        }
+        if (response.length > 0) {
+            return res
+                .status(201)
+                .json({ message: "OK", listNhanVien: response });
         }
         return res.status(201).json({ message: "Ko có dữ liệu" });
     } catch (err) {
@@ -46,7 +48,7 @@ const createNhanVien = async (req, res, next) => {
             .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
 
     const check = await NhanVien.find({ SdtNV: req.body.SdtNV });
-    if (check)
+    if (check.length > 0)
         return res.status(201).json({ message: "Số điện thoại đã tồn tại" });
     const data = req.body;
     data.MaHDVien = new mongoose.Types.ObjectId();
