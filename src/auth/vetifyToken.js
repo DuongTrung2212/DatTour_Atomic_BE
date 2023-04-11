@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
     try {
         const dateNow = new Date();
         const decoded = jwt.verify(token, config.TOKEN_KEY);
-        if (isAdmin) req.isAdmin = isAdmin;
+        // if (isAdmin) req.isAdmin = isAdmin;
 
         req.dataToken = decoded;
     } catch (err) {

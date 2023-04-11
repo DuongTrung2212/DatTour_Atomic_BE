@@ -1,9 +1,10 @@
 const { default: mongoose, ObjectId, Mongoose } = require("mongoose");
 const User = require("../model/UserModel");
-const Ve = require("../model/DatTourModel");
+const DatTour = require("../model/DatTourModel");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const Grid = require("gridfs-stream");
+const Tour = require("../model/TourModel");
 
 // let gfs, gridfsBucket;
 // const conn = mongoose.connection;
@@ -37,7 +38,7 @@ const getUser = async (req, res, next) => {
         // return res.status(201).json({ MaKH });M
         const user = await User.findOne({ MaKH: MaKH });
 
-        const ve = await Ve.find({ MaKH: MaKH });
+        const ve = await DatTour.find({ MaKH: MaKH });
         if (user) {
             return res.status(201).json({ message: "OK", user, ve });
         }
@@ -51,7 +52,7 @@ const getUserById = async (req, res, next) => {
         // return res.status(201).json({ MaKH });M
         const user = await User.findOne({ MaKH: MaKH });
 
-        const ve = await Ve.find({ MaKH: MaKH });
+        const ve = await DatTour.find({ MaKH: MaKH });
         if (user) {
             return res.status(201).json({ message: "OK", user, ve });
         }
@@ -106,15 +107,29 @@ const updateUser = async (req, res, next) => {
 const deleteUserById = async (req, res, next) => {
     try {
         const { MaKH } = req.params;
-        const isAdmin = req.isAdmin;
+        if (MaKH == req.dataToken.MaKH)
+            return res.status(201).json({
+                message: "Ko thể xóa chính mình",
+            });
+        const isAdmin = req.dataToken.isAdmin;
         if (isAdmin) {
-            const ve = await Ve.find({ MaKH: MaKH, TinhTrang: "GD3" });
+            const ve = await DatTour.find({ MaKH: MaKH, TinhTrang: "GD3" });
             if (ve.length > 0) {
                 return res.status(201).json({
                     message: "Chưa thể xóa vì user này còn vé đang hoạt động",
                 });
             }
-            await Ve.findOneAndRemove({ MaKH: MaKH });
+            const listTicketUser = await DatTour.find({
+                MaKH: MaKH,
+                TinhTrang: {
+                    $in: ["DD", "CD"],
+                },
+            });
+            if (listTicketUser.length > 0) {
+                return res.status(201).json({
+                    message: "Khách hàng này đang có 1 số đơn chờ duyệt",
+                });
+            }
             await User.findOneAndRemove({ MaKH: MaKH });
             return res.status(201).json({ message: "OK" });
             // await user.remove();
@@ -129,7 +144,7 @@ const deleteUser = async (req, res, next) => {
     try {
         const MaKH = req.dataToken.MaKH;
         const user = User.findOneAndRemove({ MaKH: MaKH });
-        const ve = Ve.findOneAndRemove({ MaKH: MaKH });
+        const ve = DatTour.findOneAndRemove({ MaKH: MaKH });
         await user.remove();
         await ve.remove();
         return res

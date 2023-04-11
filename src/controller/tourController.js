@@ -88,6 +88,7 @@ const newTour = async (req, res, next) => {
         const tour = req.body;
         const dataTitleMoTa = req.body.titleMoTa;
         const dataConTentMoTa = req.body.contentMoTa;
+
         var newArrSlide = [];
         var newArrMoTa = [];
         var MoTa = [];
@@ -99,15 +100,24 @@ const newTour = async (req, res, next) => {
             listLinkImg.push(`${process.env.ORIGIN_URL}img/${item.filename}`);
         });
         for (var i in newArrMoTa) {
-            MoTa.push({
-                title: dataTitleMoTa[i],
-                img: newArrMoTa[i],
-                content: dataConTentMoTa[i],
-            });
+            if (newArrMoTa.length == 1) {
+                MoTa.push({
+                    title: dataTitleMoTa,
+                    img: newArrMoTa[i],
+                    content: dataConTentMoTa,
+                });
+            } else {
+                MoTa.push({
+                    title: dataTitleMoTa[i],
+                    img: newArrMoTa[i],
+                    content: dataConTentMoTa[i],
+                });
+            }
         }
         tour.MaTour = idTour;
         tour.HinhAnh = newArrSlide;
         tour.MoTa = MoTa;
+
         const newTour = await Tour.create(tour);
         if (newTour) {
             return res

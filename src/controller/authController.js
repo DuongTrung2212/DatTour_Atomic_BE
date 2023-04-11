@@ -63,17 +63,19 @@ const createUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
     try {
         const { error } = loginValidation(req.body);
-        const isAdmin = false;
+        var isAdmin = false;
         if (error) return res.status(400).send(error.details[0].message);
         const user = await User.findOne({
             Sdt: req.body.Sdt,
         });
 
         if (user && bcrypt.compareSync(req.body.MatKhau, user.MatKhau)) {
-            if (user.Level == 3)
+            if (user.Level == 3) {
                 res.cookie("isAdmin", true, { httpOnly: false });
+                isAdmin = true;
+            }
             const token = jwt.sign(
-                { MaKH: user.MaKH, Sdt: user.Sdt, isAdmin },
+                { MaKH: user.MaKH, Sdt: user.Sdt, isAdmin: isAdmin },
                 process.env.TOKEN_KEY,
                 {
                     expiresIn: "7d",

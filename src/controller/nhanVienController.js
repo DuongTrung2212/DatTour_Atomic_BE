@@ -3,7 +3,7 @@ const NhanVien = require("../model/NhanVienModel");
 const Tour = require("../model/TourModel");
 
 const getAllNhanVien = async (req, res, next) => {
-    const isAdmin = req.isAdmin;
+    const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
             .status(401)
@@ -16,7 +16,7 @@ const getAllNhanVien = async (req, res, next) => {
 };
 const getAllNhanVienFreeTime = async (req, res, next) => {
     try {
-        const isAdmin = req.isAdmin;
+        const isAdmin = req.dataToken.isAdmin;
         if (!isAdmin)
             return res
                 .status(401)
@@ -41,7 +41,7 @@ const getAllNhanVienFreeTime = async (req, res, next) => {
     }
 };
 const createNhanVien = async (req, res, next) => {
-    const isAdmin = req.isAdmin;
+    const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
             .status(401)
@@ -66,7 +66,7 @@ const getNhanVien = async (req, res, next) => {
     return res.status(201).json({ message: "OK", nhanVien });
 };
 const updateNhanVien = async (req, res, next) => {
-    const isAdmin = req.isAdmin;
+    const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
             .status(401)
@@ -82,7 +82,7 @@ const updateNhanVien = async (req, res, next) => {
 };
 const deleteNhanVien = async (req, res, next) => {
     try {
-        const isAdmin = req.isAdmin;
+        const isAdmin = req.dataToken.isAdmin;
         if (!isAdmin)
             return res
                 .status(401)
