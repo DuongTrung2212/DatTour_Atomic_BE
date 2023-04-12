@@ -78,6 +78,10 @@ const updateUser = async (req, res, next) => {
         const user = await User.findOne({ MaKH: MaKH });
         // await gfs.files.deleteOne({ filename: user.Img });
         var updateData = req.body;
+        if (req.body.MatKhau) {
+            const hashPass = bcrypt.hashSync(req.body.MatKhau);
+            req.body.MatKhau = hashPass;
+        }
         var imgLink;
         if (req.file) {
             var img = req.file.filename;
@@ -170,6 +174,21 @@ const changePassUser = async (req, res, next) => {
         next(err);
     }
 };
+const changePassUserByNumber = async (req, res, next) => {
+    try {
+        const Sdt = req.body.Sdt;
+        const user = await User.findOne({ Sdt: Sdt });
+        if (user) {
+            const newPass = bcrypt.hashSync(req.body.MatKhau);
+            await user.updateOne({ MatKhau: newPass });
+            await user.save();
+            return res.status(201).json({ message: "OK" });
+        }
+        return res.status(201).json({ message: "Lỗi" });
+    } catch (err) {
+        next(err);
+    }
+};
 
 // const deleteAccount = async (req, res, next) => {
 //     try {
@@ -193,4 +212,5 @@ module.exports = {
     updateUser,
     deleteUserById,
     checkPass,
+    changePassUserByNumber,
 };

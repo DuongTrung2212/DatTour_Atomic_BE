@@ -24,6 +24,7 @@ router
 router.route("/getAllUser").get(UserController.getAllUser);
 router.route("/verify").post(UserController.checkPass);
 router.route("/changePass").patch(UserController.changePassUser);
+
 router
     .route("/:MaKH")
     .get(UserController.getUserById)
