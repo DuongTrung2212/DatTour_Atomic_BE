@@ -5,11 +5,14 @@ const User = require("../model/UserModel");
 
 const getAllTicket = async (req, res, next) => {
     try {
-        const listTour = await Tour.find({});
+        const listTour = await Tour.find({ TinhTrang: true });
         let data = [];
         for (let index = 0; index < listTour.length; index++) {
             const listTicket = await DatTour.find({
                 MaTour: listTour[index].MaTour,
+                TinhTrang: {
+                    $in: ["DD", "CD"],
+                },
             });
 
             if (listTicket.length > 0) {
@@ -120,12 +123,14 @@ const deleteTicketByAdmin = async (req, res, next) => {
         next(err);
     }
 };
-// const updateTicket = async (req, res, next) => {
-//     const data = req.body;
-//     data.MaVe = new mongoose.Types.ObjectId();
-//     const newTicket = await DatTour.create(data);
-//     if (newTicket) return res.status(201).json({ message: "OK", data });
-// };
+const updateAllTicket = async (req, res, next) => {
+    const MaTour = req.body.MaTour;
+    const listTicket = await DatTour.updateMany(
+        { MaTour: MaTour },
+        { TinhTrang: req.body.TinhTrang }
+    );
+    if (listTicket) return res.status(201).json({ message: "OK", listTicket });
+};
 module.exports = {
     getAllTicket,
     updateTicket,
@@ -133,4 +138,5 @@ module.exports = {
     newTicket,
     deleteTicketByUser,
     deleteTicketByAdmin,
+    updateAllTicket,
 };
