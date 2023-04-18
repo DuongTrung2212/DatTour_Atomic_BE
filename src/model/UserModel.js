@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     MaKH: {
         type: Schema.ObjectId,
+        unique: true,
     },
     Img: { type: String, default: "default.png" },
     TenKH: { type: String },

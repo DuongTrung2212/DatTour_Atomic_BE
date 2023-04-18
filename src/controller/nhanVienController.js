@@ -61,7 +61,7 @@ const createNhanVien = async (req, res, next) => {
 
 const getNhanVien = async (req, res, next) => {
     const { idNhanVien } = req.params;
-    const nhanVien = await NhanVien.find({ MaHDVien: idNhanVien });
+    const nhanVien = await NhanVien.findOne({ MaHDVien: idNhanVien });
     if (!nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
     return res.status(201).json({ message: "OK", nhanVien });
 };

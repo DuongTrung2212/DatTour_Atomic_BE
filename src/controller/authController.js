@@ -107,8 +107,8 @@ const logOutUser = async (req, res, next) => {
             .clearCookie("access_token")
             .clearCookie("isAdmin")
             .status(200)
-            .json({ message: "OK" })
-            .end();
+            .json({ message: "OK" });
+        // .end();
     } catch (err) {
         next(err);
     }

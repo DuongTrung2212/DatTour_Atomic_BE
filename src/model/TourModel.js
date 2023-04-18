@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const TourSchema = new Schema({
-    MaTour: { type: Schema.ObjectId },
-    TenTour: { type: String, index: true },
+    MaTour: { type: Schema.ObjectId, unique: true },
+    TenTour: { type: String, index: true, unique: true },
     Gia: { type: Number },
     HinhAnh: { type: Array },
     MoTa: { type: Array },
