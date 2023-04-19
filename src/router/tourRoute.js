@@ -25,6 +25,7 @@ router
     .get(TourController.getAllTour)
     .post(upload.any(), TourController.newTour);
 router.route("/categoryTour").get(TourController.getCategoryTour);
+router.route("/open").get(TourController.getOpenTour);
 router
     .route("/:tourId")
     .get(TourController.getTour)
