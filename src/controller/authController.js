@@ -78,7 +78,7 @@ const loginUser = async (req, res, next) => {
                 { MaKH: user.MaKH, Sdt: user.Sdt, isAdmin: isAdmin },
                 process.env.TOKEN_KEY,
                 {
-                    expiresIn: "30s",
+                    expiresIn: "7d",
                 }
             );
             data = user.toJSON();
