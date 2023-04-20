@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const DatTour = require("../model/DatTourModel");
 const Tour = require("../model/TourModel");
 const User = require("../model/UserModel");
+const Ticket = require("../model/Ticket");
 
 const getAllTicket = async (req, res, next) => {
     try {
@@ -86,14 +87,18 @@ const newTicket = async (req, res, next) => {
     data.MaKH = MaKH;
     data.MaVe = new mongoose.Types.ObjectId();
     const newTicket = await DatTour.create(data);
-    if (newTicket)
+    if (newTicket) {
+        const ticket = await Ticket.create({ Tour: tour, DatTour: newTicket });
         return res.status(201).json({ message: "OK", newTicket, SoLuongCon });
+    }
     return res.status(201).json({ message: "Loi dat tour" });
 };
 const deleteTicketByUser = async (req, res, next) => {
-    // const MaKH = req.dataToken.MaKH;
+    const MaKH = req.dataToken.MaKH;
+    if (!MaKH)
+        return res.status(201).json({ message: "Vui lòng kiểm tra lại" });
     const { MaVe } = req.params;
-    const ticket = await DatTour.findOne({ MaVe: MaVe });
+    const ticket = await DatTour.findOne({ MaKH: MaKH, MaVe: MaVe });
     if (ticket) {
         if (ticket.TinhTrang == "CD") {
             const tour = await Tour.findOne({ MaTour: ticket.MaTour });
