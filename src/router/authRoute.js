@@ -9,6 +9,7 @@ router.route("/checkUser").post(authController.checkUserExists);
 router.route("/signup").post(authController.createUser);
 router.route("/login").post(authController.loginUser, loginValidation);
 router.route("/logout").get(verifyToken, authController.logOutUser);
+router.route("/checkAdmin").get(verifyToken, authController.checkAdmin);
 router
     .route("/changePassByNumber")
     .patch(UserController.changePassUserByNumber);

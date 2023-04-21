@@ -143,7 +143,17 @@ const updateTour = async (req, res, next) => {
         const tour = await Tour.findOne({ MaTour: tourId });
         var oldArrSlide = tour.HinhAnh;
         var oldArrMoTa = tour.MoTa;
-
+        const datTour = await DatTour.find({
+            MaTour: tourId,
+            TinhTrang: {
+                $in: ["DD", "CD"],
+            },
+        });
+        if (datTour.length > 0) {
+            return res
+                .status(201)
+                .json({ message: "Đơn đặt tour vẫn chưa hoàn thành hết" });
+        }
         if (arrayImg) {
             arrayImg.forEach((item) => {
                 if (item.fieldname == "imgMoTa") newArrMoTa.push(item.filename);
@@ -179,6 +189,10 @@ const updateTour = async (req, res, next) => {
         if (MoTa.length > 0) data.MoTa = MoTa;
         const result = await Tour.findOneAndUpdate({ MaTour: tourId }, data);
         if (result) {
+            await DatTour.updateMany(
+                { MaTour: tourId, TinhTrang: "CD" },
+                { Tour: tour }
+            );
             return res.status(201).json({ message: "OK", result, data });
         }
         return res.status(401).json({ message: "Loi" });

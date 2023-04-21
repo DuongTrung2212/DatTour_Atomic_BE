@@ -113,4 +113,20 @@ const logOutUser = async (req, res, next) => {
         next(err);
     }
 };
-module.exports = { createUser, loginUser, logOutUser, checkUserExists };
+const checkAdmin = async (req, res, next) => {
+    try {
+        const isAdmin = req.dataToken.isAdmin;
+        if (isAdmin)
+            return res.status(200).json({ message: "OK", data: req.dataToken });
+        return res.status(200).json({ message: "Not admin" });
+    } catch (err) {
+        next(err);
+    }
+};
+module.exports = {
+    checkAdmin,
+    createUser,
+    loginUser,
+    logOutUser,
+    checkUserExists,
+};

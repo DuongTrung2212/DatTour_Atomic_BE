@@ -17,8 +17,10 @@ const verifyToken = async (req, res, next) => {
     try {
         const dateNow = new Date();
         const decoded = jwt.verify(token, config.TOKEN_KEY);
+        if (Date.now() >= decoded.exp * 1000) {
+            return res.status(403).send("A token is expired");
+        }
         // if (isAdmin) req.isAdmin = isAdmin;
-
         req.dataToken = decoded;
     } catch (err) {
         return res

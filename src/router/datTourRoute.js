@@ -7,7 +7,7 @@ router
     .get(datTourController.getAllTicket)
     .post(datTourController.newTicket);
 router.route("/filter/:filter").get(datTourController.getUserTicket);
-router.route("/manager").post(datTourController.updateAllTicket);
+router.route("/completeAll").post(datTourController.updateAllTicket);
 router.route("/manager/:MaVe").delete(datTourController.deleteTicketByAdmin);
 router
     .route("/:MaVe")

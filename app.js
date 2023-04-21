@@ -40,6 +40,7 @@ app.use("/api/tour", tourRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/nhanVien", verifyToken, nhanVienRoute);
 app.use("/api/datTour", verifyToken, datTourRoute);
+
 app.use("/api/img", express.static("uploads"));
 
 app.use("/api/", uploadRoute);
