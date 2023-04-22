@@ -3,7 +3,7 @@ const DatTour = require("../model/DatTourModel");
 const Tour = require("../model/TourModel");
 const User = require("../model/UserModel");
 
-const getAllTicket = async (req, res, next) => {
+const getAllTicket = async (req, res, next) => {// lấy tất cả vé
     try {
         const listTour = await Tour.find({ TinhTrang: true });
         let data = [];
@@ -35,7 +35,7 @@ const getAllTicket = async (req, res, next) => {
         next(err);
     }
 };
-const getUserTicket = async (req, res, next) => {
+const getUserTicket = async (req, res, next) => {//lấy vé người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         const { filter } = req.params;
@@ -58,7 +58,7 @@ const getUserTicket = async (req, res, next) => {
         next(err);
     }
 };
-const updateTicket = async (req, res, next) => {
+const updateTicket = async (req, res, next) => {// cập nhật vé
     try {
         const { MaVe } = req.params;
         const ticket = await DatTour.findOneAndUpdate({ MaVe: MaVe }, req.body);
@@ -68,7 +68,7 @@ const updateTicket = async (req, res, next) => {
         next(err);
     }
 };
-const newTicket = async (req, res, next) => {
+const newTicket = async (req, res, next) => {//đặt vé
     // return res.status(201).json({ message:  });
     try {
         const MaKH = req.dataToken.MaKH;
@@ -104,7 +104,7 @@ const newTicket = async (req, res, next) => {
         next(err);
     }
 };
-const deleteTicketByUser = async (req, res, next) => {
+const deleteTicketByUser = async (req, res, next) => {//xóa vé từ người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         if (!MaKH)
@@ -129,7 +129,7 @@ const deleteTicketByUser = async (req, res, next) => {
         next(err);
     }
 };
-const deleteTicketByAdmin = async (req, res, next) => {
+const deleteTicketByAdmin = async (req, res, next) => {//xóa vé từ admin
     try {
         const { MaVe } = req.params;
         const ticket = await DatTour.findOne({ MaVe: MaVe });

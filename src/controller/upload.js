@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Grid = require("gridfs-stream");
 
-let gfs, gridfsBucket;
+let gfs, gridfsBucket;// khai bào biến 
 const conn = mongoose.connection;
 conn.once("open", function () {
     gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
@@ -12,13 +12,13 @@ conn.once("open", function () {
     gfs.collection("photos");
 });
 
-const uploadImg = async (req, res) => {
+const uploadImg = async (req, res) => {// cập nhật ảnh
     if (req.file === undefined) return res.send("you must select a file.");
     const imgUrl = `${process.env.ORIGIN_URL}img/${req.file.filename}`;
     return res.send(imgUrl);
 };
 
-const getImg = async (req, res) => {
+const getImg = async (req, res) => {// lấy ảnh
     try {
         const file = await gfs.files.findOne({ filename: req.params.filename });
         const readStream = gridfsBucket.openDownloadStream(file._id);
@@ -28,7 +28,7 @@ const getImg = async (req, res) => {
     }
 };
 
-const deleteImg = async (req, res) => {
+const deleteImg = async (req, res) => {// xóa ảnh
     try {
         await gfs.files.deleteOne({ filename: req.params.filename });
         res.send("success");
