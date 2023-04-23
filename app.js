@@ -14,7 +14,6 @@ require("dotenv").config();
 const userRoute = require("./src/router/userRoute");
 const tourRoute = require("./src/router/tourRoute");
 const authRoute = require("./src/router/authRoute");
-const uploadRoute = require("./src/router/upload");
 const datTourRoute = require("./src/router/datTourRoute");
 const nhanVienRoute = require("./src/router/nhanVienRoute");
 
@@ -40,10 +39,7 @@ app.use("/api/tour", tourRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/nhanVien", verifyToken, nhanVienRoute);
 app.use("/api/datTour", verifyToken, datTourRoute);
-
 app.use("/api/img", express.static("uploads"));
-
-app.use("/api/", uploadRoute);
 
 app.get("/", (req, res) => {
     return res.status(200).json({

@@ -62,7 +62,15 @@ const updateTicket = async (req, res, next) => {
     try {
         const { MaVe } = req.params;
         const ticket = await DatTour.findOneAndUpdate({ MaVe: MaVe }, req.body);
-        if (ticket) return res.status(201).json({ message: "OK", ticket });
+        if (ticket) {
+            if (req.body.TinhTrang === "TC") {
+                const tour = await Tour.findOne({ MaTour: ticket.MaTour });
+                await tour.updateOne({
+                    SoLuong: tour.SoLuong + ticket.SLNguoi,
+                });
+            }
+            return res.status(201).json({ message: "OK", ticket });
+        }
         return res.status(401).json({ message: "Ko co du lieu" });
     } catch (err) {
         next(err);
@@ -112,12 +120,14 @@ const deleteTicketByUser = async (req, res, next) => {
         const { MaVe } = req.params;
         const ticket = await DatTour.findOne({ MaKH: MaKH, MaVe: MaVe });
         if (ticket) {
-            if (ticket.TinhTrang == "CD") {
-                const tour = await Tour.findOne({ MaTour: ticket.MaTour });
-                await tour.updateOne({
-                    SoLuong: tour.SoLuong + ticket.SLNguoi,
-                });
-                await tour.save();
+            if (ticket.TinhTrang == "CD" || ticket.TinhTrang == "TC") {
+                if (ticket.TinhTrang == "CD") {
+                    const tour = await Tour.findOne({ MaTour: ticket.MaTour });
+                    await tour.updateOne({
+                        SoLuong: tour.SoLuong + ticket.SLNguoi,
+                    });
+                    await tour.save();
+                }
                 await ticket.remove();
                 return res.status(201).json({ message: "OK" });
             } else {
