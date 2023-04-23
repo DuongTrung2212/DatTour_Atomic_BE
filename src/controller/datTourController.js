@@ -60,8 +60,8 @@ const getUserTicket = async (req, res, next) => {//lấy vé người dùng
 };
 const updateTicket = async (req, res, next) => {// cập nhật vé
     try {
-        const { MaVe } = req.params;
-        const ticket = await DatTour.findOneAndUpdate({ MaVe: MaVe }, req.body);
+        const { MaVe } = req.params; //lấy id trên đường link
+        const ticket = await DatTour.findOneAndUpdate({ MaVe: MaVe }, req.body); //cập nhật trong csdl
         if (ticket) {
             if (req.body.TinhTrang === "TC") {
                 const tour = await Tour.findOne({ MaTour: ticket.MaTour });
@@ -101,7 +101,7 @@ const newTicket = async (req, res, next) => {//đặt vé
         data.Tour = tour;
         data.MaKH = MaKH;
         data.MaVe = new mongoose.Types.ObjectId();
-        const newTicket = await DatTour.create(data);
+        const newTicket = await DatTour.create(data); //thêm dữ liệu mới vô csdl
         if (newTicket) {
             return res
                 .status(201)
@@ -156,9 +156,9 @@ const deleteTicketByAdmin = async (req, res, next) => {//xóa vé từ admin
         next(err);
     }
 };
-const updateAllTicket = async (req, res, next) => {
+const updateAllTicket = async (req, res, next) => { //cập nhật toàn bộ vé của 1 tour
     try {
-        const MaTour = req.body.MaTour;
+        const MaTour = req.body.MaTour; 
         const checkTourOK = await DatTour.findOne({
             MaTour: MaTour,
             TinhTrang: "CD",
@@ -171,7 +171,7 @@ const updateAllTicket = async (req, res, next) => {
         const listTicket = await DatTour.updateMany(
             {
                 MaTour: MaTour,
-                TinhTrang: "DD",
+                TinhTrang: "DD", 
             },
             { TinhTrang: "HT" }
         );

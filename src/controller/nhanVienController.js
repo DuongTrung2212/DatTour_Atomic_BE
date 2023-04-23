@@ -8,7 +8,7 @@ const getAllNhanVien = async (req, res, next) => {//lấy tất cả thông tin 
         return res
             .status(401)
             .json({ message: "Chỉ Admin mới sử dụng được quyền này" });
-    const listNhanVien = await NhanVien.find({});
+    const listNhanVien = await NhanVien.find({}); //lấy tất cả dữ liệu bảng nhân viên
     if (listNhanVien.length > 0) {
         return res.status(201).json({ message: "OK", listNhanVien });
     }
@@ -16,7 +16,7 @@ const getAllNhanVien = async (req, res, next) => {//lấy tất cả thông tin 
 };
 const getAllNhanVienFreeTime = async (req, res, next) => {//láy tất cả nhân viên chưa được nhận tour
     try {
-        const isAdmin = req.dataToken.isAdmin;
+        const isAdmin = req.dataToken.isAdmin; //lấy dữ liệu trong token
         if (!isAdmin)
             return res
                 .status(401)
