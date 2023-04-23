@@ -18,7 +18,8 @@ const Tour = require("../model/TourModel");
 //     console.log("GFS ok");
 // });
 /////////////////////////////////////////////////////////////
-const checkPass = async (req, res, next) => {// kiểm tra mật khẩu
+const checkPass = async (req, res, next) => {
+    // kiểm tra mật khẩu
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -32,7 +33,8 @@ const checkPass = async (req, res, next) => {// kiểm tra mật khẩu
         next(err);
     }
 };
-const getUser = async (req, res, next) => {// lấy thông tin người dùng
+const getUser = async (req, res, next) => {
+    // lấy thông tin người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         // return res.status(201).json({ MaKH });M
@@ -46,7 +48,8 @@ const getUser = async (req, res, next) => {// lấy thông tin người dùng
         next(err);
     }
 };
-const getUserById = async (req, res, next) => {// lấy user bằng id
+const getUserById = async (req, res, next) => {
+    // lấy user bằng id
     try {
         const { MaKH } = req.params;
         // return res.status(201).json({ MaKH });M
@@ -60,7 +63,8 @@ const getUserById = async (req, res, next) => {// lấy user bằng id
         next(err);
     }
 };
-const getAllUser = async (req, res, next) => {// lấy tất cả user
+const getAllUser = async (req, res, next) => {
+    // lấy tất cả user
     try {
         const userList = await User.find({});
         if (userList) {
@@ -72,7 +76,8 @@ const getAllUser = async (req, res, next) => {// lấy tất cả user
     }
 };
 
-const updateUser = async (req, res, next) => {// cập nhật user
+const updateUser = async (req, res, next) => {
+    // cập nhật user
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -108,10 +113,12 @@ const updateUser = async (req, res, next) => {// cập nhật user
         next(err);
     }
 };
-const deleteUserById = async (req, res, next) => {// xóa người dùng bằng id
+const deleteUserById = async (req, res, next) => {
+    // xóa người dùng bằng id
     try {
         const { MaKH } = req.params;
-        if (MaKH == req.dataToken.MaKH)// lấy mã KH qua token
+        if (MaKH == req.dataToken.MaKH)
+            // lấy mã KH qua token
             return res.status(201).json({
                 message: "Ko thể xóa chính mình",
             });
@@ -144,7 +151,8 @@ const deleteUserById = async (req, res, next) => {// xóa người dùng bằng 
         next(err);
     }
 };
-const deleteUser = async (req, res, next) => {// xóa người dùng dựa trên token
+const deleteUser = async (req, res, next) => {
+    // xóa người dùng dựa trên token
     try {
         const MaKH = req.dataToken.MaKH;
         const user = User.findOneAndRemove({ MaKH: MaKH });
@@ -159,7 +167,8 @@ const deleteUser = async (req, res, next) => {// xóa người dùng dựa trên
         next(err);
     }
 };
-const changePassUser = async (req, res, next) => {// đổi mk người dùng
+const changePassUser = async (req, res, next) => {
+    // đổi mk người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -174,7 +183,8 @@ const changePassUser = async (req, res, next) => {// đổi mk người dùng
         next(err);
     }
 };
-const changePassUserByNumber = async (req, res, next) => {// đổi sdt
+const changePassUserByNumber = async (req, res, next) => {
+    // đổi sdt
     try {
         const Sdt = req.body.Sdt;
         const user = await User.findOne({ Sdt: Sdt });
