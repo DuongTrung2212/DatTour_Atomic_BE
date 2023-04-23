@@ -24,8 +24,8 @@ const tourSearch = async (req, res, next) => {//tìm tour
         const { dataSearch } = req.params;//params là lấy biến ở trong link
         const listSearch = await Tour.find({
             TenTour: {
-                $regex: `${dataSearch}`,
-                $options: "i",
+                $regex: `${dataSearch}`, //biểu thức chính quy
+                $options: "i",   
             },
             // $text: { $search: dataSearch },
         });
@@ -55,10 +55,10 @@ const getOpenTour = async (req, res, next) => {//lấy tour đang mở
 const getCategoryTour = async (req, res, next) => {// lấy tất cả các loại tour
     try {
         const tourTN = await Tour.find({ LoaiTour: "TTN" }).limit(5);
-        const tourTQ = await Tour.find({ LoaiTour: "TTQ" }).limit(5);
+        const tourTQ = await Tour.find({ LoaiTour: "TTQ" }).limit(5); //chỉ lấy 5 thằng
         const tourBien = await Tour.find({ LoaiTour: "TB" }).limit(5);
         if (tourBien <= 0 && tourTQ <= 0 && tourTN <= 0) {
-            return res.status(201).json({
+            return res.status(201).json({   //trả về kiểu dữ liệu json
                 message: "ko co du lieu",
             });
         }

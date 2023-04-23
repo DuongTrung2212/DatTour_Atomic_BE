@@ -20,15 +20,15 @@ const { GridFsStorage } = require("multer-gridfs-storage");
 //         };
 //     },
 // });
-var storage = multer.diskStorage({
-    destination: "uploads",
-    filename: function (req, file, cb) {
+var storage = multer.diskStorage({//xu ly 
+    destination: "uploads",//foder lưu ảnh
+    filename: function (req, file, cb) {//xử lý tên ảnh
         let extArray = file.mimetype.split("/");
         let mimetype = extArray[extArray.length - 1];
         req.abc = mimetype;
         cb(
             null,
-            `${Date.now()}_${Math.round(Math.random() * 1e9)}.${mimetype}`
+            `${Date.now()}_${Math.round(Math.random() * 1e9)}.${mimetype}`//lưu tên ảnh từ chữ thành tên số
         );
     },
 });
