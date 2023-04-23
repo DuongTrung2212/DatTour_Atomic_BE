@@ -18,7 +18,7 @@ const Tour = require("../model/TourModel");
 //     console.log("GFS ok");
 // });
 /////////////////////////////////////////////////////////////
-const checkPass = async (req, res, next) => {
+const checkPass = async (req, res, next) => {// kiểm tra mật khẩu
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -32,7 +32,7 @@ const checkPass = async (req, res, next) => {
         next(err);
     }
 };
-const getUser = async (req, res, next) => {
+const getUser = async (req, res, next) => {// lấy thông tin người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         // return res.status(201).json({ MaKH });M
@@ -46,7 +46,7 @@ const getUser = async (req, res, next) => {
         next(err);
     }
 };
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res, next) => {// lấy user bằng id
     try {
         const { MaKH } = req.params;
         // return res.status(201).json({ MaKH });M
@@ -60,7 +60,7 @@ const getUserById = async (req, res, next) => {
         next(err);
     }
 };
-const getAllUser = async (req, res, next) => {
+const getAllUser = async (req, res, next) => {// lấy tất cả user
     try {
         const userList = await User.find({});
         if (userList) {
@@ -72,7 +72,7 @@ const getAllUser = async (req, res, next) => {
     }
 };
 
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res, next) => {// cập nhật user
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -108,10 +108,10 @@ const updateUser = async (req, res, next) => {
         next(err);
     }
 };
-const deleteUserById = async (req, res, next) => {
+const deleteUserById = async (req, res, next) => {// xóa người dùng bằng id
     try {
         const { MaKH } = req.params;
-        if (MaKH == req.dataToken.MaKH)
+        if (MaKH == req.dataToken.MaKH)// lấy mã KH qua token
             return res.status(201).json({
                 message: "Ko thể xóa chính mình",
             });
@@ -144,7 +144,7 @@ const deleteUserById = async (req, res, next) => {
         next(err);
     }
 };
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => {// xóa người dùng dựa trên token
     try {
         const MaKH = req.dataToken.MaKH;
         const user = User.findOneAndRemove({ MaKH: MaKH });
@@ -159,7 +159,7 @@ const deleteUser = async (req, res, next) => {
         next(err);
     }
 };
-const changePassUser = async (req, res, next) => {
+const changePassUser = async (req, res, next) => {// đổi mk người dùng
     try {
         const MaKH = req.dataToken.MaKH;
         const user = await User.findOne({ MaKH: MaKH });
@@ -174,7 +174,7 @@ const changePassUser = async (req, res, next) => {
         next(err);
     }
 };
-const changePassUserByNumber = async (req, res, next) => {
+const changePassUserByNumber = async (req, res, next) => {// đổi sdt
     try {
         const Sdt = req.body.Sdt;
         const user = await User.findOne({ Sdt: Sdt });

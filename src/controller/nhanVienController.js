@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 const NhanVien = require("../model/NhanVienModel");
 const Tour = require("../model/TourModel");
 
-const getAllNhanVien = async (req, res, next) => {
+const getAllNhanVien = async (req, res, next) => {//lấy tất cả thông tin nhân viên
     const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
@@ -14,7 +14,7 @@ const getAllNhanVien = async (req, res, next) => {
     }
     return res.status(201).json({ message: "Ko có dữ liệu" });
 };
-const getAllNhanVienFreeTime = async (req, res, next) => {
+const getAllNhanVienFreeTime = async (req, res, next) => {//láy tất cả nhân viên chưa được nhận tour
     try {
         const isAdmin = req.dataToken.isAdmin;
         if (!isAdmin)
@@ -40,7 +40,7 @@ const getAllNhanVienFreeTime = async (req, res, next) => {
         next(err);
     }
 };
-const createNhanVien = async (req, res, next) => {
+const createNhanVien = async (req, res, next) => {//tạo mới nhân viên
     const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
@@ -59,13 +59,13 @@ const createNhanVien = async (req, res, next) => {
     return res.status(201).json({ message: "Ko cos du lieu" });
 };
 
-const getNhanVien = async (req, res, next) => {
+const getNhanVien = async (req, res, next) => {//lấy nhân viên bằng id
     const { idNhanVien } = req.params;
     const nhanVien = await NhanVien.findOne({ MaHDVien: idNhanVien });
     if (!nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
     return res.status(201).json({ message: "OK", nhanVien });
 };
-const updateNhanVien = async (req, res, next) => {
+const updateNhanVien = async (req, res, next) => {// cập nhật nhân viên
     const isAdmin = req.dataToken.isAdmin;
     if (!isAdmin)
         return res
@@ -80,7 +80,7 @@ const updateNhanVien = async (req, res, next) => {
     if (!nhanVien) return res.status(201).json({ message: "Ko co du lieu" });
     return res.status(201).json({ message: "OK", nhanVien });
 };
-const deleteNhanVien = async (req, res, next) => {
+const deleteNhanVien = async (req, res, next) => {// xóa nhân viên
     try {
         const isAdmin = req.dataToken.isAdmin;
         if (!isAdmin)
@@ -106,7 +106,7 @@ const deleteNhanVien = async (req, res, next) => {
     }
 };
 
-module.exports = {
+module.exports = {// export hàm ra ngoài để sử dụng
     getAllNhanVienFreeTime,
     getAllNhanVien,
     getNhanVien,
