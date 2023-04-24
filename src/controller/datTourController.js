@@ -88,7 +88,7 @@ const newTicket = async (req, res, next) => {
             MaTour: req.body.MaTour,
             MaKH: MaKH,
             TinhTrang: {
-                $in: ["DD", "CD", "TC"],
+                $in: ["DD", "CD"],
             },
         });
         if (checkBooked) {
@@ -165,9 +165,10 @@ const deleteTicketByAdmin = async (req, res, next) => {
         next(err);
     }
 };
-const updateAllTicket = async (req, res, next) => { //cập nhật toàn bộ vé của 1 tour
+const updateAllTicket = async (req, res, next) => {
+    //cập nhật toàn bộ vé của 1 tour
     try {
-        const MaTour = req.body.MaTour; 
+        const MaTour = req.body.MaTour;
         const checkTourOK = await DatTour.findOne({
             MaTour: MaTour,
             TinhTrang: "CD",
@@ -180,7 +181,7 @@ const updateAllTicket = async (req, res, next) => { //cập nhật toàn bộ v�
         const listTicket = await DatTour.updateMany(
             {
                 MaTour: MaTour,
-                TinhTrang: "DD", 
+                TinhTrang: "DD",
             },
             { TinhTrang: "HT" }
         );
