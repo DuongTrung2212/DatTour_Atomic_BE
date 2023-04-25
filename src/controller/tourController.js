@@ -4,7 +4,8 @@ const Ve = require("../model/DatTourModel");
 const fs = require("fs");
 const DatTour = require("../model/DatTourModel");
 const NhanVien = require("../model/NhanVienModel");
-const getAllTour = async (req, res, next) => {//lấy tất cả các tour
+const getAllTour = async (req, res, next) => {
+    //lấy tất cả các tour
     try {
         const listTour = await Tour.find({});
         if (listTour <= 0) {
@@ -19,13 +20,14 @@ const getAllTour = async (req, res, next) => {//lấy tất cả các tour
     }
 };
 
-const tourSearch = async (req, res, next) => {//tìm tour
+const tourSearch = async (req, res, next) => {
+    //tìm tour
     try {
-        const { dataSearch } = req.params;//params là lấy biến ở trong link
+        const { dataSearch } = req.params; //params là lấy biến ở trong link
         const listSearch = await Tour.find({
             TenTour: {
                 $regex: `${dataSearch}`, //biểu thức chính quy
-                $options: "i",   
+                $options: "i",
             },
             // $text: { $search: dataSearch },
         });
@@ -39,7 +41,8 @@ const tourSearch = async (req, res, next) => {//tìm tour
         next(err);
     }
 };
-const getOpenTour = async (req, res, next) => {//lấy tour đang mở
+const getOpenTour = async (req, res, next) => {
+    //lấy tour đang mở
     try {
         const listTour = await Tour.find({ TinhTrang: true });
         if (listTour <= 0) {
@@ -52,13 +55,24 @@ const getOpenTour = async (req, res, next) => {//lấy tour đang mở
         next(err);
     }
 };
-const getCategoryTour = async (req, res, next) => {// lấy tất cả các loại tour
+const getCategoryTour = async (req, res, next) => {
+    // lấy tất cả các loại tour
     try {
-        const tourTN = await Tour.find({ LoaiTour: "TTN" }).limit(5);
-        const tourTQ = await Tour.find({ LoaiTour: "TTQ" }).limit(5); //chỉ lấy 5 thằng
-        const tourBien = await Tour.find({ LoaiTour: "TB" }).limit(5);
+        const tourTN = await Tour.find({
+            LoaiTour: "TTN",
+            TinhTrang: true,
+        }).limit(5);
+        const tourTQ = await Tour.find({
+            LoaiTour: "TTQ",
+            TinhTrang: true,
+        }).limit(5); //chỉ lấy 5 thằng
+        const tourBien = await Tour.find({
+            LoaiTour: "TB",
+            TinhTrang: true,
+        }).limit(5);
         if (tourBien <= 0 && tourTQ <= 0 && tourTN <= 0) {
-            return res.status(201).json({   //trả về kiểu dữ liệu json
+            return res.status(201).json({
+                //trả về kiểu dữ liệu json
                 message: "ko co du lieu",
             });
         }
@@ -69,10 +83,11 @@ const getCategoryTour = async (req, res, next) => {// lấy tất cả các lo�
         next(err);
     }
 };
-const getTour = async (req, res, next) => {//lấy chi tiết tour theo id
+const getTour = async (req, res, next) => {
+    //lấy chi tiết tour theo id
     try {
         const { tourId } = req.params;
-        const tour = await Tour.findOne({ MaTour: tourId });//truy vấn
+        const tour = await Tour.findOne({ MaTour: tourId }); //truy vấn
         const HDVien = await NhanVien.findOne({ MaHDVien: tour.MaHDVien });
         if (tour) {
             return res.status(201).json({ message: "OK", tour, HDVien });
@@ -82,9 +97,10 @@ const getTour = async (req, res, next) => {//lấy chi tiết tour theo id
         next(err);
     }
 };
-const newTour = async (req, res, next) => {//tạo tour
+const newTour = async (req, res, next) => {
+    //tạo tour
     try {
-        const idTour = new mongoose.Types.ObjectId();//tạo id
+        const idTour = new mongoose.Types.ObjectId(); //tạo id
         const tour = req.body;
         const dataTitleMoTa = req.body.titleMoTa;
         const dataConTentMoTa = req.body.contentMoTa;
@@ -129,7 +145,8 @@ const newTour = async (req, res, next) => {//tạo tour
         next(err);
     }
 };
-const updateTour = async (req, res, next) => {// cập nhật tour
+const updateTour = async (req, res, next) => {
+    // cập nhật tour
     try {
         const { tourId } = req.params;
         const data = req.body;
@@ -140,7 +157,7 @@ const updateTour = async (req, res, next) => {// cập nhật tour
         var newArrSlide = [];
         var newArrMoTa = [];
         var MoTa = [];
-        const tour = await Tour.findOne({ MaTour: tourId });//findOne : truy vấn csdl
+        const tour = await Tour.findOne({ MaTour: tourId }); //findOne : truy vấn csdl
         var oldArrSlide = tour.HinhAnh;
         var oldArrMoTa = tour.MoTa;
         const datTour = await DatTour.find({
@@ -155,8 +172,10 @@ const updateTour = async (req, res, next) => {// cập nhật tour
                 .json({ message: "Đơn đặt tour vẫn chưa hoàn thành hết" });
         }
         if (arrayImg) {
-            arrayImg.forEach((item) => {//forEach là vòng lặp qua mảng img
-                if (item.fieldname == "imgMoTa") newArrMoTa.push(item.filename);//piush là thêm vào mảng img
+            arrayImg.forEach((item) => {
+                //forEach là vòng lặp qua mảng img
+                if (item.fieldname == "imgMoTa")
+                    newArrMoTa.push(item.filename); //piush là thêm vào mảng img
                 else newArrSlide.push(item.filename);
             });
         }
@@ -200,7 +219,8 @@ const updateTour = async (req, res, next) => {// cập nhật tour
         next(err);
     }
 };
-const deleteTour = async (req, res, next) => {// xóa tour
+const deleteTour = async (req, res, next) => {
+    // xóa tour
     try {
         const { tourId } = req.params;
         const datTour = await DatTour.find({
